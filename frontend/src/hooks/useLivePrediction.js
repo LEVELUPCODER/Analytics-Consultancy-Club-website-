@@ -18,7 +18,9 @@ export function useLivePrediction() {
       const payload = await res.json();
       setData(payload);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load live prediction");
+      setError(
+        err instanceof Error ? err.message : "Failed to load live prediction",
+      );
     } finally {
       setLoading(false);
     }
