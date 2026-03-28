@@ -28,6 +28,21 @@ PREMATCH_FEATURE_STORE = os.getenv(
 SCORECARD_PATH = os.getenv("SCORECARD_PATH", os.path.join(DATA_DIR, "live_scorecard.json"))
 CACHE_TTL_SECONDS = int(os.getenv("LIVE_CACHE_TTL", "60"))
 LIVE_MATCH_API = "https://api.cricapi.com/v1/currentMatches"
+IPL_MATCH_HINTS = (
+    "ipl",
+    "indian premier league",
+    "bengaluru",
+    "sunrisers",
+    "royal challengers",
+    "chennai super kings",
+    "mumbai indians",
+    "kolkata knight riders",
+    "rajasthan royals",
+    "delhi capitals",
+    "gujarat titans",
+    "lucknow super giants",
+    "punjab kings",
+)
 
 
 @dataclass
@@ -204,8 +219,24 @@ def _fetch_live_match() -> Dict[str, Any]:
         if not data:
             raise RuntimeError("No live matches were returned by CricAPI")
 
+        def _is_ipl_candidate(candidate: Dict[str, Any]) -> bool:
+            teams = candidate.get("teams", [])
+            normalized_teams = [_normalize_team_name(str(t)) for t in teams if t]
+
+            series_bits = [
+                str(candidate.get("series", "")),
+                str(candidate.get("seriesName", "")),
+                str(candidate.get("name", "")),
+            ]
+            hint_text = " ".join(series_bits + normalized_teams).lower()
+
+            keyword_hit = any(hint in hint_text for hint in IPL_MATCH_HINTS)
+            team_hit = any(team in supported_teams for team in normalized_teams)
+            return keyword_hit or team_hit
+
+        ipl_candidates = [m for m in data if _is_ipl_candidate(m)]
         selected_match = None
-        for candidate in data:
+        for candidate in ipl_candidates:
             teams = candidate.get("teams", [])
             if len(teams) < 2:
                 continue
@@ -232,25 +263,29 @@ def _fetch_live_match() -> Dict[str, Any]:
             break
 
         if selected_match is None:
-            first = data[0]
-            teams = first.get("teams", ["Team A", "Team B"])
+            first_ipl = ipl_candidates[0] if ipl_candidates else {}
+            teams = first_ipl.get("teams", ["Team A", "Team B"]) if isinstance(first_ipl, dict) else ["Team A", "Team B"]
             payload = {
-                "match_id": first.get("id", "unknown"),
+                "match_id": first_ipl.get("id", "unknown") if isinstance(first_ipl, dict) else "unknown",
                 "teamA": teams[0] if len(teams) > 0 else "Team A",
                 "teamB": teams[1] if len(teams) > 1 else "Team B",
-                "venue": _normalize_venue_name(first.get("venue", "Unknown")),
-                "status": first.get("status", "Live"),
+                "venue": _normalize_venue_name(first_ipl.get("venue", "Unknown")) if isinstance(first_ipl, dict) else "Unknown",
+                "status": first_ipl.get("status", "Live") if isinstance(first_ipl, dict) else "Live",
                 "score": " | ".join(
                     [
                         f"{s.get('inning', 'Inning')} {s.get('r', 0)}/{s.get('w', 0)} ({s.get('o', 0)} ov)"
-                        for s in first.get("score", [])
+                        for s in (first_ipl.get("score", []) if isinstance(first_ipl, dict) else [])
                     ]
                 )
                 or "Live score unavailable",
-                "toss": first.get("tossWinner", "N/A"),
+                "toss": first_ipl.get("tossWinner", "N/A") if isinstance(first_ipl, dict) else "N/A",
                 "source": "cricapi",
                 "modelCompatible": False,
-                "compatibilityReason": "No live match matched trained IPL team/venue labels",
+                "compatibilityReason": (
+                    "No live IPL match found in CricAPI response"
+                    if not ipl_candidates
+                    else "No live IPL match matched trained team/venue labels"
+                ),
             }
             _cached_set("live_match", payload)
             return payload
