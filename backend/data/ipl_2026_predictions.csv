@@ -1,0 +1,21 @@
+Match_Date,Team_A,Team_B,Venue,Toss_Winner,Toss_Decision,Prob_Team_A_Win,Prob_Team_B_Win,Predicted_Winner,Decision_Threshold
+2026-03-31,Punjab Kings,Gujarat Titans,New Chandigarh,,field,0.7757,0.2243,Punjab Kings,0.64
+2026-04-05,Royal Challengers Bengaluru,Chennai Super Kings,Bengaluru,,field,0.6838,0.3162,Royal Challengers Bengaluru,0.64
+2026-04-08,Delhi Capitals,Gujarat Titans,Delhi,,field,0.6698,0.3302,Delhi Capitals,0.64
+2026-04-10,Rajasthan Royals,Royal Challengers Bengaluru,Guwahati,,field,0.6563,0.3437,Rajasthan Royals,0.64
+2026-03-29,Mumbai Indians,Kolkata Knight Riders,Mumbai,,field,0.6308,0.3692,Kolkata Knight Riders,0.64
+2026-04-01,Lucknow Super Giants,Delhi Capitals,Lucknow,,field,0.6064,0.3936,Delhi Capitals,0.64
+2026-04-12,Lucknow Super Giants,Gujarat Titans,Lucknow,,field,0.4697,0.5303,Gujarat Titans,0.64
+2026-04-12,Mumbai Indians,Royal Challengers Bengaluru,Mumbai,,field,0.4604,0.5396,Royal Challengers Bengaluru,0.64
+2026-04-11,Chennai Super Kings,Delhi Capitals,Chennai,,field,0.4387,0.5613,Delhi Capitals,0.64
+2026-04-09,Kolkata Knight Riders,Lucknow Super Giants,Kolkata,,field,0.4308,0.5692,Lucknow Super Giants,0.64
+2026-03-30,Rajasthan Royals,Chennai Super Kings,Guwahati,,field,0.4058,0.5942,Chennai Super Kings,0.64
+2026-04-04,Gujarat Titans,Rajasthan Royals,Ahmedabad,,field,0.3903,0.6097,Rajasthan Royals,0.64
+2026-04-03,Chennai Super Kings,Punjab Kings,Chennai,,field,0.3824,0.6176,Punjab Kings,0.64
+2026-04-07,Rajasthan Royals,Mumbai Indians,Guwahati,,field,0.306,0.694,Mumbai Indians,0.64
+2026-04-05,Sunrisers Hyderabad,Lucknow Super Giants,Hyderabad,,field,0.295,0.705,Lucknow Super Giants,0.64
+2026-04-11,Punjab Kings,Sunrisers Hyderabad,New Chandigarh,,field,0.2873,0.7127,Sunrisers Hyderabad,0.64
+2026-03-28,Royal Challengers Bengaluru,Sunrisers Hyderabad,Bengaluru,,field,0.2692,0.7308,Sunrisers Hyderabad,0.64
+2026-04-02,Kolkata Knight Riders,Sunrisers Hyderabad,Kolkata,,field,0.2518,0.7482,Sunrisers Hyderabad,0.64
+2026-04-06,Kolkata Knight Riders,Punjab Kings,Kolkata,,field,0.2333,0.7667,Punjab Kings,0.64
+2026-04-04,Delhi Capitals,Mumbai Indians,Delhi,,field,0.2157,0.7843,Mumbai Indians,0.64

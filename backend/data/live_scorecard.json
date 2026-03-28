@@ -1,0 +1,29 @@
+{
+  "match": "RCB vs CSK",
+  "score": "147/4 (15.2)",
+  "batsmen": [
+    {
+      "name": "V. Kohli",
+      "runs": 65,
+      "balls": 38,
+      "isStriker": true
+    },
+    {
+      "name": "F. du Plessis",
+      "runs": 44,
+      "balls": 25,
+      "isStriker": false
+    }
+  ],
+  "bowlers": [
+    {
+      "name": "R. Jadeja",
+      "overs": 3,
+      "runs": 22,
+      "wickets": 1
+    }
+  ],
+  "recent": "1 4 W . 6 1",
+  "rrr": "10.2",
+  "crr": "9.6"
+}
