@@ -29,19 +29,13 @@ SCORECARD_PATH = os.getenv("SCORECARD_PATH", os.path.join(DATA_DIR, "live_scorec
 CACHE_TTL_SECONDS = int(os.getenv("LIVE_CACHE_TTL", "60"))
 LIVE_MATCH_API = "https://api.cricapi.com/v1/currentMatches"
 IPL_MATCH_HINTS = (
-    "ipl",
-    "indian premier league",
+    "rcb",
+    "srh",
     "bengaluru",
+    "bangalore",
+    "hyderabad",
     "sunrisers",
-    "royal challengers",
-    "chennai super kings",
-    "mumbai indians",
-    "kolkata knight riders",
-    "rajasthan royals",
-    "delhi capitals",
-    "gujarat titans",
-    "lucknow super giants",
-    "punjab kings",
+    "ipl",
 )
 
 
@@ -220,19 +214,8 @@ def _fetch_live_match() -> Dict[str, Any]:
             raise RuntimeError("No live matches were returned by CricAPI")
 
         def _is_ipl_candidate(candidate: Dict[str, Any]) -> bool:
-            teams = candidate.get("teams", [])
-            normalized_teams = [_normalize_team_name(str(t)) for t in teams if t]
-
-            series_bits = [
-                str(candidate.get("series", "")),
-                str(candidate.get("seriesName", "")),
-                str(candidate.get("name", "")),
-            ]
-            hint_text = " ".join(series_bits + normalized_teams).lower()
-
-            keyword_hit = any(hint in hint_text for hint in IPL_MATCH_HINTS)
-            team_hit = any(team in supported_teams for team in normalized_teams)
-            return keyword_hit or team_hit
+            match_str = str(candidate).lower()
+            return any(keyword in match_str for keyword in IPL_MATCH_HINTS)
 
         ipl_candidates = [m for m in data if _is_ipl_candidate(m)]
         selected_match = None
@@ -311,6 +294,7 @@ def _fetch_live_match() -> Dict[str, Any]:
             "modelCompatible": True,
             "compatibilityReason": None,
         }
+        print("SELECTED MATCH:", first)
         _cached_set("live_match", payload)
         return payload
     except Exception as exc:  # noqa: BLE001
