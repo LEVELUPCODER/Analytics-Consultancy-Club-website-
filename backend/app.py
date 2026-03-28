@@ -28,7 +28,6 @@ PREMATCH_FEATURE_STORE = os.getenv(
 SCORECARD_PATH = os.getenv("SCORECARD_PATH", os.path.join(DATA_DIR, "live_scorecard.json"))
 CACHE_TTL_SECONDS = int(os.getenv("LIVE_CACHE_TTL", "60"))
 LIVE_MATCH_API = "https://api.cricapi.com/v1/currentMatches"
-DEMO_MODE = True
 
 
 @dataclass
@@ -170,19 +169,20 @@ def _load_detailed_scorecard() -> Dict[str, Any]:
 
 
 def _fetch_live_match() -> Dict[str, Any]:
-    if DEMO_MODE:
-        return {
-            "match_id": "demo-ipl-2026-rcb-csk",
-            "teamA": "Royal Challengers Bengaluru",
-            "teamB": "Chennai Super Kings",
-            "venue": "M Chinnaswamy Stadium, Bengaluru",
-            "status": "Live Demo - 1st Innings",
-            "score": "Royal Challengers Bengaluru 147/4 (15.2 ov)",
-            "toss": "Royal Challengers Bengaluru",
-            "source": "demo",
-            "modelCompatible": True,
-            "compatibilityReason": None,
-        }
+    # Production mode: demo payload disabled so live data is always fetched from CricAPI.
+    # if DEMO_MODE:
+    #     return {
+    #         "match_id": "demo-ipl-2026-rcb-csk",
+    #         "teamA": "Royal Challengers Bengaluru",
+    #         "teamB": "Chennai Super Kings",
+    #         "venue": "M Chinnaswamy Stadium, Bengaluru",
+    #         "status": "Live Demo - 1st Innings",
+    #         "score": "Royal Challengers Bengaluru 147/4 (15.2 ov)",
+    #         "toss": "Royal Challengers Bengaluru",
+    #         "source": "demo",
+    #         "modelCompatible": True,
+    #         "compatibilityReason": None,
+    #     }
 
     cached = _cached_get("live_match")
     if cached is not None:
